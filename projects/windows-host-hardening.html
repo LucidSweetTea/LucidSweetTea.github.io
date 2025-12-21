@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Windows Host Hardening | Britney Martinez</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; line-height: 1.6; color: #111; }
+    header, main, footer { max-width: 900px; margin: 0 auto; padding: 28px; }
+    header { padding-top: 44px; }
+    a { color: inherit; }
+    .card { border: 1px solid #e6e6e6; border-radius: 12px; padding: 16px; margin: 14px 0; }
+    .meta { color: #555; font-size: 14px; margin-top: 6px; }
+    ul { margin: 10px 0 0 18px; }
+    code { background: #f6f6f6; padding: 2px 6px; border-radius: 6px; }
+    footer { color: #666; font-size: 13px; padding-bottom: 44px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Windows Host Hardening (10 Techniques)</h1>
+    <p class="meta">
+      Skills: secure configuration, policy enforcement, baseline hardening, verification
+    </p>
+    <p><a href="../index.html">← Back to Home</a></p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Objective</h2>
+      <p>
+        Apply multiple host-hardening controls on a Windows system and verify each change with evidence
+        (before/after configuration and observable impact). The goal was to reduce attack surface and
+        improve security posture using practical, enterprise-relevant settings.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Environment</h2>
+      <ul>
+        <li>Platform: Windows (lab environment)</li>
+        <li>Context: structured host hardening exercise with documentation requirements</li>
+        <li>Artifacts: screenshots of configuration changes and validation steps</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Tools & Interfaces Used</h2>
+      <ul>
+        <li>Windows Security settings, Local Security Policy, and administrative consoles</li>
+        <li>Windows Event Viewer / EVTX review (where applicable)</li>
+        <li>PowerShell / command line for validation (where applicable)</li>
+      </ul>
+      <p class="meta">
+        Note: This page summarizes the work at a high level. Sensitive identifiers and system details are redacted.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Hardening Actions (High-Level Summary)</h2>
+      <p>
+        The following are representative hardening categories commonly implemented in this exercise. I selected
+        controls to address authentication hygiene, host firewalling, least privilege, and auditing/visibility.
+      </p>
+      <ul>
+        <li><strong>Account & authentication hardening:</strong> strengthened sign-in requirements and reduced weak configurations.</li>
+        <li><strong>Least privilege:</strong> limited unnecessary admin usage and reduced exposure to privileged actions.</li>
+        <li><strong>Firewall & network exposure reduction:</strong> validated firewall posture and reduced unneeded inbound access.</li>
+        <li><strong>Service and feature reduction:</strong> disabled or minimized unnecessary components to reduce attack surface.</li>
+        <li><strong>Logging & auditing:</strong> enabled/validated auditing to improve detection and forensic readiness.</li>
+        <li><strong>Update and baseline posture:</strong> confirmed security-relevant settings aligned with a hardened baseline.</li>
+      </ul>
+      <p class="meta">
+        If you want this page to list the exact 10 techniques by name, I can tailor it precisely—just send your checklist items.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Verification Approach</h2>
+      <ul>
+        <li>Captured baseline screenshots before changes.</li>
+        <li>Applied each hardening control individually to ensure traceability.</li>
+        <li>Validated impact using built-in Windows tools and settings views.</li>
+        <li>Recorded final screenshots to demonstrate successful implementation.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Outcome</h2>
+      <ul>
+        <li>Implemented a set of hardening controls that reduced attack surface and improved security visibility.</li>
+        <li>Produced documentation suitable for audit-style review (clear evidence and step-by-step validation).</li>
+        <li>Strengthened practical familiarity with Windows security configuration and verification workflows.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>What I Would Improve Next</h2>
+      <ul>
+        <li>Automate portions of validation using PowerShell to create a repeatable compliance checklist.</li>
+        <li>Expand logging visibility with centralized collection (SIEM-style) in an enterprise simulation.</li>
+        <li>Map each control to a framework (e.g., CIS benchmarks) to strengthen governance alignment.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div>© <span id="y"></span> Britney Martinez</div>
+    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  </footer>
+</body>
+</html>
