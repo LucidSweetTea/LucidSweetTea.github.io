@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HTB Labs: Vaccine & Unified | Britney Martinez</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; line-height: 1.6; color: #111; }
+    header, main, footer { max-width: 900px; margin: 0 auto; padding: 28px; }
+    header { padding-top: 44px; }
+    a { color: inherit; }
+    .card { border: 1px solid #e6e6e6; border-radius: 12px; padding: 16px; margin: 14px 0; }
+    .meta { color: #555; font-size: 14px; margin-top: 6px; }
+    ul { margin: 10px 0 0 18px; }
+    code { background: #f6f6f6; padding: 2px 6px; border-radius: 6px; }
+    footer { color: #666; font-size: 13px; padding-bottom: 44px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hack The Box Labs (Vaccine / Unified)</h1>
+    <p class="meta">
+      Skills: enumeration, vulnerability validation, privilege escalation, documentation
+    </p>
+    <p><a href="../index.html">← Back to Home</a></p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Objective</h2>
+      <p>
+        Complete authorized Hack The Box lab environments by identifying exposed services, validating
+        vulnerabilities, and escalating privileges to reach required objectives. This work was conducted
+        ethically in a controlled training environment.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Core Methodology</h2>
+      <ul>
+        <li><strong>Recon & enumeration:</strong> identified live hosts, open ports, and service versions.</li>
+        <li><strong>Hypothesis & validation:</strong> tested likely misconfigurations or known weaknesses safely.</li>
+        <li><strong>Initial access:</strong> gained a foothold using verified access paths (authorized lab only).</li>
+        <li><strong>Privilege escalation:</strong> enumerated system context and escalated with a least-assumption approach.</li>
+        <li><strong>Documentation:</strong> recorded steps, outputs, and reasoning for repeatability and learning.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Tools Used</h2>
+      <ul>
+        <li>Kali Linux toolset</li>
+        <li>Nmap for discovery/enumeration</li>
+        <li>Web and service interaction tools as needed per target</li>
+        <li>Linux enumeration techniques for escalation paths</li>
+      </ul>
+      <p class="meta">
+        I avoid publishing exploit chains that could be misused. The focus here is on methodology and defensive takeaways.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Defensive Takeaways</h2>
+      <ul>
+        <li><strong>Reduce exposure:</strong> limit internet-facing services and enforce least privilege.</li>
+        <li><strong>Patch & baseline:</strong> keep services updated and remove default/weak configurations.</li>
+        <li><strong>Monitor:</strong> collect logs for authentication events, privilege changes, and suspicious process activity.</li>
+        <li><strong>Validate controls:</strong> verify that hardening and segmentation would prevent the same chain.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Outcome</h2>
+      <ul>
+        <li>Completed lab objectives in authorized environments and captured proof artifacts.</li>
+        <li>Improved workflow discipline for enumeration, validation, and escalation.</li>
+        <li>Strengthened ability to write clear, reproducible technical documentation.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>What I Would Improve Next</h2>
+      <ul>
+        <li>Add a structured “IOC” section to each lab writeup (what logs would show, what defenders would detect).</li>
+        <li>Create a standard report template (summary, evidence, timeline, mitigation) for consistency.</li>
+        <li>Track recurring misconfig patterns and map them to prioritized remediation steps.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div>© <span id="y"></span> Britney Martinez</div>
+    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  </footer>
+</body>
+</html>
