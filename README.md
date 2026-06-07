@@ -1,1 +1,25 @@
-# LucidSweetTea.github.io
+# Britney Martinez Cybersecurity Portfolio
+
+Recent UTSA cybersecurity graduate with hands-on experience in security labs, host hardening, network analysis, and technical documentation.
+Currently working in a security leadership role supporting operations, access-related processes, documentation, and issue triage in a fast-paced environment.
+
+## Featured Projects
+- **Network Breach Analysis** – timeline reconstruction, log review, traffic analysis, MITRE mapping
+- **Windows Host Hardening** – secure configurations, policy enforcement, verification
+- **Hack The Box Labs** – enumeration, vulnerability validation, privilege escalation, defensive takeaways
+
+## Skills
+- Incident response fundamentals
+- Host hardening
+- Network analysis
+- Windows and Linux fundamentals
+- Technical documentation
+- VirtualBox, Kali Linux, Nmap, Burp Suite, Metasploit
+
+## Certifications / Training
+- Foundations of Cybersecurity – Google/Coursera
+- Play It Safe: Manage Security Risks – Google/Coursera
+- CompTIA Security+ in progress
+
+## Portfolio Website
+[View Portfolio](https://lucidsweettea.github.io/)
