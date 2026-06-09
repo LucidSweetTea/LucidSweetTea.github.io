@@ -4,10 +4,10 @@ Recent UTSA cybersecurity graduate with hands-on experience in security labs, ho
 Currently working in a security leadership role supporting operations, access-related processes, documentation, and issue triage in a fast-paced environment.
 
 ## Featured Projects
-- **Network Breach Analysis** – timeline reconstruction, log review, traffic analysis, MITRE mapping
-- **Windows Host Hardening** – secure configurations, policy enforcement, verification
-- **Hack The Box Labs** – enumeration, vulnerability validation, privilege escalation, defensive takeaways
-
+- [**Network Breach Analysis**](./projects/network-breach-analysis.html) – timeline reconstruction, log review, traffic analysis, MITRE mapping
+- [**Windows Host Hardening**](./projects/windows-host-hardening.html) – secure configurations, policy enforcement, verification
+- [**Hack The Box Labs**](./projects/htb-vaccine-unified.html) – enumeration, vulnerability validation, privilege escalation, defensive takeaways
+- 
 ## Skills
 - Incident response fundamentals
 - Host hardening
