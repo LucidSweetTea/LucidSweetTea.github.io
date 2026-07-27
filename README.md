@@ -19,7 +19,7 @@ Currently working in a security leadership role supporting operations, access-re
 ## Certifications / Training
 - Foundations of Cybersecurity – Google/Coursera
 - Play It Safe: Manage Security Risks – Google/Coursera
-- CompTIA Security+ in progress
-
+- CompTIA Security+ (SY0-701) — Certified July 2026; valid through July 2029
+  
 ## Portfolio Website
 [View Portfolio](https://lucidsweettea.github.io/)
