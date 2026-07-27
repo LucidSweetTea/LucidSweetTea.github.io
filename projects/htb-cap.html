@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Hack The Box Cap Security Assessment | Britney Martinez</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      color: #111;
+      background: #fff;
+    }
+
+    header,
+    main,
+    footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    header {
+      padding-top: 60px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .meta {
+      color: #555;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .severity-critical {
+      font-weight: bold;
+    }
+
+    footer {
+      color: #666;
+      font-size: 13px;
+      padding-bottom: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Hack The Box: Cap Security Assessment</h1>
+
+    <p class="meta">
+      Network enumeration, access-control testing, packet analysis,
+      credential exposure, SSH access, and Linux privilege escalation
+    </p>
+
+    <p>
+      <a href="../index.html">← Back to Home</a>
+    </p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Project Overview</h2>
+
+      <p>
+        Completed an authorized security assessment of the retired Hack The Box
+        Cap machine. The assessment included service enumeration, web application
+        testing, PCAP analysis, credential exposure validation, remote access,
+        and Linux privilege-escalation analysis.
+      </p>
+
+      <p>
+        Flags, passwords, target addresses, and other sensitive lab values have
+        been intentionally omitted.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Environment and Tools</h2>
+
+      <ul>
+        <li>Hack The Box retired Cap machine</li>
+        <li>Kali Linux running in Oracle VirtualBox</li>
+        <li>HTB OpenVPN lab connection</li>
+        <li>Nmap for network enumeration</li>
+        <li>Firefox for web application testing</li>
+        <li>Wireshark for packet-capture analysis</li>
+        <li>SSH for authenticated remote access</li>
+        <li>Linux capability enumeration with <code>getcap</code></li>
+        <li>Python 3.8 for privilege-escalation validation</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Assessment Methodology</h2>
+
+      <h3>1. Network Enumeration</h3>
+
+      <p>
+        Performed an initial TCP scan to identify the target's externally
+        accessible services.
+      </p>
+
+      <pre><code>nmap &lt;TARGET_IP&gt;</code></pre>
+
+      <p>The scan identified three exposed services:</p>
+
+      <ul>
+        <li>FTP on TCP port 21</li>
+        <li>SSH on TCP port 22</li>
+        <li>HTTP on TCP port 80</li>
+      </ul>
+
+      <h3>2. Web Application Testing</h3>
+
+      <p>
+        Reviewed the web-based security dashboard and observed that generated
+        packet captures were accessed through a predictable URL containing a
+        numeric object identifier.
+      </p>
+
+      <p>
+        Changing the identifier allowed access to a packet capture associated
+        with another user. This demonstrated an insecure direct object reference
+        and missing server-side authorization validation.
+      </p>
+
+      <h3>3. Packet-Capture Analysis</h3>
+
+      <p>
+        Downloaded the exposed PCAP from the authorized lab and examined it in
+        Wireshark. Applying the following display filter isolated FTP traffic:
+      </p>
+
+      <pre><code>ftp</code></pre>
+
+      <p>
+        The capture contained FTP authentication commands transmitted in
+        plaintext. The exact credentials are not included in this portfolio.
+      </p>
+
+      <h3>4. Credential-Reuse Validation</h3>
+
+      <p>
+        The exposed FTP credentials were tested against the target's SSH service.
+        The same credentials were accepted, demonstrating password reuse across
+        multiple network services.
+      </p>
+
+      <p>
+        Successful SSH authentication provided access to a standard Linux user
+        account.
+      </p>
+
+      <h3>5. Linux Privilege-Escalation Analysis</h3>
+
+      <p>
+        Enumerated Linux file capabilities to identify binaries with elevated
+        privileges:
+      </p>
+
+      <pre><code>getcap -r / 2&gt;/dev/null</code></pre>
+
+      <p>
+        The Python 3.8 interpreter had the
+        <code>cap_setuid</code> capability assigned. This capability allowed the
+        Python process to change its user ID to root and launch a privileged
+        shell.
+      </p>
+
+      <p>
+        Root access was successfully validated within the authorized HTB lab.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Security Findings</h2>
+
+      <h3>Finding 1: Broken Object-Level Authorization</h3>
+
+      <p><strong>Severity:</strong> High</p>
+
+      <p>
+        Predictable packet-capture identifiers could be modified to access
+        another user's scan. The application did not verify that the requesting
+        user was authorized to access the selected object.
+      </p>
+
+      <h3>Finding 2: Plaintext FTP Credentials</h3>
+
+      <p><strong>Severity:</strong> High</p>
+
+      <p>
+        FTP transmitted authentication credentials without encryption. Anyone
+        capable of capturing the traffic could recover the username and password.
+      </p>
+
+      <h3>Finding 3: Password Reuse Across Services</h3>
+
+      <p><strong>Severity:</strong> High</p>
+
+      <p>
+        The same password was valid for both FTP and SSH. Compromise of one
+        service therefore resulted in access to another service.
+      </p>
+
+      <h3>Finding 4: Excessive Linux File Capability</h3>
+
+      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+
+      <p>
+        The Python interpreter possessed the <code>cap_setuid</code> capability.
+        Assigning this capability to a general-purpose interpreter allowed an
+        authenticated user to obtain root privileges.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Remediation Recommendations</h2>
+
+      <ul>
+        <li>
+          Enforce server-side authorization checks before returning packet
+          captures or other user-owned resources.
+        </li>
+
+        <li>
+          Replace FTP with an encrypted protocol such as SFTP and disable
+          plaintext authentication.
+        </li>
+
+        <li>
+          Rotate all credentials exposed through unencrypted network traffic.
+        </li>
+
+        <li>
+          Require unique passwords across services and consider multifactor
+          authentication for remote administrative access.
+        </li>
+
+        <li>
+          Remove unnecessary Linux capabilities from general-purpose
+          interpreters.
+        </li>
+
+        <li>
+          Regularly audit file capabilities using
+          <code>getcap -r / 2&gt;/dev/null</code>.
+        </li>
+
+        <li>
+          Apply least privilege to binaries, services, and user accounts.
+        </li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Skills Demonstrated</h2>
+
+      <ul>
+        <li>TCP service enumeration and attack-surface analysis</li>
+        <li>Web application access-control testing</li>
+        <li>IDOR and broken authorization identification</li>
+        <li>Wireshark filtering and PCAP analysis</li>
+        <li>Plaintext credential exposure analysis</li>
+        <li>Credential-reuse validation</li>
+        <li>Linux command-line navigation</li>
+        <li>Linux file-capability enumeration</li>
+        <li>Privilege-escalation analysis</li>
+        <li>Risk assessment and remediation documentation</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Key Takeaways</h2>
+
+      <ul>
+        <li>
+          Predictable object identifiers must still be protected by authorization
+          controls.
+        </li>
+
+        <li>
+          Plaintext protocols can expose credentials and create compromise paths
+          into other services.
+        </li>
+
+        <li>
+          Password reuse significantly increases the impact of one exposed
+          credential.
+        </li>
+
+        <li>
+          Linux capabilities can create privilege-escalation paths similar to
+          improperly configured SUID binaries.
+        </li>
+
+        <li>
+          Findings should be documented with both technical impact and practical
+          remediation.
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div id="copy"></div>
+
+    <script>
+      document.getElementById("copy").textContent =
+        `© ${new Date().getFullYear()} Britney Martinez`;
+    </script>
+  </footer>
+</body>
+</html>
