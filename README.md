@@ -7,7 +7,7 @@ Currently working in a security leadership role supporting operations, access-re
 - [**Network Breach Analysis**](./projects/network-breach-analysis.html) – timeline reconstruction, log review, traffic analysis, MITRE mapping
 - [**Windows Host Hardening**](./projects/windows-host-hardening.html) – secure configurations, policy enforcement, verification
 - [**Hack The Box Labs**](./projects/htb-vaccine-unified.html) – enumeration, vulnerability validation, privilege escalation, defensive takeaways
-- 
+- [Hack The Box: Cap Security Assessment](https://lucidsweettea.github.io/projects/htb-cap.html) — IDOR testing, PCAP analysis, credential exposure, SSH access, and Linux privilege escalation
 ## Skills
 - Incident response fundamentals
 - Host hardening
