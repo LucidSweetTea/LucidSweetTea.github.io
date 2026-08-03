@@ -248,6 +248,20 @@ nl -ba processor-src/server.py</code></pre>
 
       <h3>5. Internal Service Discovery</h3>
 
+      <figure>
+  <img
+    src="./paperwork-internal-services-sanitized.png"
+    alt="Sanitized socket enumeration showing Paperwork internal and external listening services"
+    style="width: 100%; max-width: 800px; border: 1px solid #ddd; border-radius: 10px;"
+  />
+
+  <figcaption class="meta">
+    Sanitized socket enumeration from the authorized Hack The Box
+    Paperwork lab. The results show the loopback-only printer service on
+    TCP port 9100 alongside externally listening services.
+  </figcaption>
+</figure>
+
       <p>
         Enumerated running processes and listening sockets from the obtained
         service account:
