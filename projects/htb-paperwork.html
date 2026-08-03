@@ -54,6 +54,23 @@
       overflow-x: auto;
     }
 
+    figure {
+      margin: 24px 0;
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    figcaption {
+      margin-top: 8px;
+    }
+
     .severity-critical {
       font-weight: bold;
     }
@@ -89,15 +106,15 @@
         Completed an authorized security assessment of the retired Hack The Box
         Paperwork machine. The assessment included external service enumeration,
         web application analysis, custom protocol testing, Python source-code
-        review, command-injection validation, internal service discovery, lateral
-        movement, and Linux privilege-escalation analysis.
+        review, command-injection validation, internal service discovery,
+        lateral movement, and Linux privilege-escalation analysis.
       </p>
 
       <p>
-        The assessment demonstrated how weaknesses across multiple services could
-        be chained together to progress from unauthenticated network access to a
-        low-privileged service account, a standard Linux user, and ultimately
-        administrative access.
+        The assessment demonstrated how weaknesses across multiple services
+        could be chained together to progress from unauthenticated network
+        access to a low-privileged service account, a standard Linux user,
+        and ultimately administrative access.
       </p>
 
       <p>
@@ -143,8 +160,8 @@
       </ul>
 
       <p>
-        A full TCP port scan identified an additional custom service on TCP port
-        1515:
+        A full TCP port scan identified an additional custom service on TCP
+        port 1515:
       </p>
 
       <pre><code>nmap -Pn -p- --min-rate 1000 &lt;TARGET_IP&gt;</code></pre>
@@ -153,25 +170,6 @@
         The unusual port was recorded for further service identification rather
         than being trusted solely based on Nmap's default service label.
       </p>
-
-      <!--
-      Evidence image can be inserted here later.
-
-      Example:
-
-      <figure>
-        <img
-          src="./paperwork-nmap-sanitized.png"
-          alt="Sanitized Nmap scan showing SSH, HTTP, and the custom service"
-          style="width: 100%; max-width: 800px; border: 1px solid #ddd; border-radius: 10px;"
-        />
-
-        <figcaption class="meta">
-          Sanitized Nmap results from the authorized Hack The Box Paperwork lab.
-          Target addressing was removed.
-        </figcaption>
-      </figure>
-      -->
 
       <h3>2. Web Application Analysis</h3>
 
@@ -249,18 +247,17 @@ nl -ba processor-src/server.py</code></pre>
       <h3>5. Internal Service Discovery</h3>
 
       <figure>
-  <img
-    src="./paperwork-internal-services-sanitized.png"
-    alt="Sanitized socket enumeration showing Paperwork internal and external listening services"
-    style="width: 100%; max-width: 800px; border: 1px solid #ddd; border-radius: 10px;"
-  />
+        <img
+          src="./paperwork-internal-services-sanitized.png"
+          alt="Sanitized socket enumeration showing Paperwork internal and external listening services"
+        />
 
-  <figcaption class="meta">
-    Sanitized socket enumeration from the authorized Hack The Box
-    Paperwork lab. The results show the loopback-only printer service on
-    TCP port 9100 alongside externally listening services.
-  </figcaption>
-</figure>
+        <figcaption class="meta">
+          Sanitized socket enumeration from the authorized Hack The Box
+          Paperwork lab. The results show the loopback-only printer service on
+          TCP port 9100 alongside externally listening services.
+        </figcaption>
+      </figure>
 
       <p>
         Enumerated running processes and listening sockets from the obtained
@@ -299,8 +296,8 @@ ss -lntp</code></pre>
 
       <p>
         A temporary SSH public key was written to the user's
-        <code>authorized_keys</code> file. The associated private key was used to
-        authenticate locally as <code>archivist</code>.
+        <code>authorized_keys</code> file. The associated private key was used
+        to authenticate locally as <code>archivist</code>.
       </p>
 
       <p>
@@ -317,9 +314,9 @@ ss -lntp</code></pre>
       <pre><code>/run/paperwork/mgmt.sock</code></pre>
 
       <p>
-        The socket was accessible to the <code>archivist</code> group. The daemon
-        was implemented as a readable Python script, allowing its authentication,
-        logging, and incident-response behavior to be reviewed directly.
+        The socket was accessible to the <code>archivist</code> group. The
+        daemon was implemented as a readable Python script, allowing its
+        authentication, logging, and incident-response behavior to be reviewed.
       </p>
 
       <p>
@@ -329,7 +326,7 @@ ss -lntp</code></pre>
         client.
       </p>
 
-           <h3>8. UNIX File-Descriptor Exposure</h3>
+      <h3>8. UNIX File-Descriptor Exposure</h3>
 
       <p>
         The daemon transferred file descriptors using the UNIX socket
@@ -354,12 +351,12 @@ ss -lntp</code></pre>
         <img
           src="./paperwork-completion-sanitized.png"
           alt="Sanitized Hack The Box Paperwork completion confirmation"
-          style="width: 100%; max-width: 800px; border: 1px solid #ddd; border-radius: 10px;"
         />
 
         <figcaption class="meta">
-          Completion confirmation from the authorized Hack The Box Paperwork lab.
-          Credentials, flags, IP addresses, and terminal output were excluded.
+          Completion confirmation from the authorized Hack The Box Paperwork
+          lab. Credentials, flags, IP addresses, and terminal output were
+          excluded.
         </figcaption>
       </figure>
     </section>
@@ -369,13 +366,15 @@ ss -lntp</code></pre>
 
       <h3>Finding 1: OS Command Injection in the LPD Service</h3>
 
-      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+      <p class="severity-critical">
+        <strong>Severity:</strong> Critical
+      </p>
 
       <p>
-        Network-controlled job-name data was incorporated into a command executed
-        with <code>shell=True</code>. An unauthenticated attacker could inject
-        operating-system commands and obtain access using the service account's
-        permissions.
+        Network-controlled job-name data was incorporated into a command
+        executed with <code>shell=True</code>. An unauthenticated attacker could
+        inject operating-system commands and obtain access using the service
+        account's permissions.
       </p>
 
       <h3>Finding 2: Exposed Application Source Code</h3>
@@ -389,9 +388,11 @@ ss -lntp</code></pre>
         execution path.
       </p>
 
-      <h3>Finding 3: Improper Path Validation in the Printer Service</h3>
+      <h3>Finding 3: Improper Path Validation</h3>
 
-      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+      <p class="severity-critical">
+        <strong>Severity:</strong> Critical
+      </p>
 
       <p>
         The internal printer service did not securely normalize or restrict
@@ -401,18 +402,22 @@ ss -lntp</code></pre>
 
       <h3>Finding 4: Arbitrary File Write as Another User</h3>
 
-      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+      <p class="severity-critical">
+        <strong>Severity:</strong> Critical
+      </p>
 
       <p>
         The printer service ran as the <code>archivist</code> user and allowed
         attacker-controlled files to be written into that user's home directory.
-        Writing an SSH <code>authorized_keys</code> file enabled lateral movement
-        from the service account to the standard user.
+        Writing an SSH <code>authorized_keys</code> file enabled lateral
+        movement from the service account to the standard user.
       </p>
 
       <h3>Finding 5: Insecure UNIX File-Descriptor Transfer</h3>
 
-      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+      <p class="severity-critical">
+        <strong>Severity:</strong> Critical
+      </p>
 
       <p>
         The root-owned management daemon transferred open file descriptors for
@@ -438,13 +443,13 @@ ss -lntp</code></pre>
 
       <ul>
         <li>
-          Remove <code>shell=True</code> and execute required programs through a
-          fixed argument list that does not invoke a command shell.
+          Remove <code>shell=True</code> and execute required programs through
+          a fixed argument list that does not invoke a command shell.
         </li>
 
         <li>
           Apply strict allow-list validation to LPD queue names, job names,
-          control-file fields, and all other network-controlled values.
+          control-file fields, and other network-controlled values.
         </li>
 
         <li>
@@ -453,44 +458,35 @@ ss -lntp</code></pre>
         </li>
 
         <li>
-          Canonicalize filesystem paths before use and verify that resolved paths
-          remain inside the permitted storage directory.
+          Canonicalize filesystem paths and verify that resolved paths remain
+          inside the permitted storage directory.
         </li>
 
         <li>
-          Reject absolute paths, parent-directory traversal sequences, and
-          unexpected drive or volume identifiers.
+          Reject absolute paths and parent-directory traversal sequences.
         </li>
 
         <li>
-          Run internal printer services under a dedicated account that does not
-          own interactive user home directories or SSH configuration.
+          Run printer services under dedicated accounts that do not own
+          interactive user home directories or SSH configuration.
         </li>
 
         <li>
           Prevent application services from writing to
-          <code>~/.ssh</code>, shell configuration files, scheduled-task
-          locations, and other security-sensitive paths.
+          <code>~/.ssh</code> and other security-sensitive locations.
         </li>
 
         <li>
-          Restrict management-socket access to the smallest necessary set of
-          accounts and verify peer credentials before serving requests.
+          Restrict management-socket access and verify peer credentials.
         </li>
 
         <li>
           Never transfer privileged file descriptors to untrusted clients.
-          Return only sanitized data required for the management operation.
         </li>
 
         <li>
-          Store administrative secrets in a dedicated secrets-management system
-          rather than a plaintext configuration file.
-        </li>
-
-        <li>
-          Rotate credentials exposed by the affected daemon and review access
-          logs for previous unauthorized use.
+          Store administrative secrets in a dedicated secrets-management
+          system instead of plaintext configuration files.
         </li>
 
         <li>
@@ -555,8 +551,8 @@ ss -lntp</code></pre>
         </li>
 
         <li>
-          Effective security assessments connect technical findings to business
-          impact and practical remediation.
+          Effective security assessments connect technical findings to
+          business impact and practical remediation.
         </li>
       </ul>
     </section>
