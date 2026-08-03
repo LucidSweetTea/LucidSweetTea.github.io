@@ -8,6 +8,7 @@ Currently working in a security leadership role supporting operations, access-re
 - [**Windows Host Hardening**](./projects/windows-host-hardening.html) – secure configurations, policy enforcement, verification
 - [**Hack The Box Labs**](./projects/htb-vaccine-unified.html) – enumeration, vulnerability validation, privilege escalation, defensive takeaways
 - [Hack The Box: Cap Security Assessment](https://lucidsweettea.github.io/projects/htb-cap.html) — IDOR testing, PCAP analysis, credential exposure, SSH access, and Linux privilege escalation
+- [Hack The Box: Paperwork Security Assessment](https://lucidsweettea.github.io/projects/htb-paperwork.html) – LPD command injection, Python source-code review, PJL path traversal, SSH lateral movement, UNIX socket analysis, and Linux privilege escalation
 ## Skills
 - Incident response fundamentals
 - Host hardening
