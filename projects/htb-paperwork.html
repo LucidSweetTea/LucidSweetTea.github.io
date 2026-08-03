@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Hack The Box Paperwork Security Assessment | Britney Martinez</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      color: #111;
+      background: #fff;
+    }
+
+    header,
+    main,
+    footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    header {
+      padding-top: 60px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .meta {
+      color: #555;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    pre {
+      overflow-x: auto;
+    }
+
+    .severity-critical {
+      font-weight: bold;
+    }
+
+    footer {
+      color: #666;
+      font-size: 13px;
+      padding-bottom: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Hack The Box: Paperwork Security Assessment</h1>
+
+    <p class="meta">
+      Network enumeration, source-code review, command injection,
+      internal-service analysis, lateral movement, UNIX socket testing,
+      and Linux privilege escalation
+    </p>
+
+    <p>
+      <a href="../index.html">← Back to Home</a>
+    </p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Project Overview</h2>
+
+      <p>
+        Completed an authorized security assessment of the retired Hack The Box
+        Paperwork machine. The assessment included external service enumeration,
+        web application analysis, custom protocol testing, Python source-code
+        review, command-injection validation, internal service discovery, lateral
+        movement, and Linux privilege-escalation analysis.
+      </p>
+
+      <p>
+        The assessment demonstrated how weaknesses across multiple services could
+        be chained together to progress from unauthenticated network access to a
+        low-privileged service account, a standard Linux user, and ultimately
+        administrative access.
+      </p>
+
+      <p>
+        Flags, passwords, SSH keys, target addresses, VPN addresses, and other
+        sensitive lab values have been intentionally omitted.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Environment and Tools</h2>
+
+      <ul>
+        <li>Hack The Box retired Paperwork machine</li>
+        <li>Kali Linux running in Oracle VirtualBox</li>
+        <li>HTB OpenVPN lab connection</li>
+        <li>Nmap for network and service enumeration</li>
+        <li>Firefox for web application analysis</li>
+        <li>Python 3 for protocol testing and socket communication</li>
+        <li>Netcat for connectivity testing and controlled callbacks</li>
+        <li>SSH for authenticated lateral movement</li>
+        <li>Linux process and socket enumeration tools</li>
+        <li>Static Python source-code review</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Assessment Methodology</h2>
+
+      <h3>1. Network Enumeration</h3>
+
+      <p>
+        Performed an initial TCP service scan to identify externally accessible
+        services and establish the target's attack surface.
+      </p>
+
+      <pre><code>nmap -Pn -sC -sV &lt;TARGET_IP&gt;</code></pre>
+
+      <p>The initial scan identified:</p>
+
+      <ul>
+        <li>SSH on TCP port 22</li>
+        <li>HTTP on TCP port 80</li>
+      </ul>
+
+      <p>
+        A full TCP port scan identified an additional custom service on TCP port
+        1515:
+      </p>
+
+      <pre><code>nmap -Pn -p- --min-rate 1000 &lt;TARGET_IP&gt;</code></pre>
+
+      <p>
+        The unusual port was recorded for further service identification rather
+        than being trusted solely based on Nmap's default service label.
+      </p>
+
+      <!--
+      Evidence image can be inserted here later.
+
+      Example:
+
+      <figure>
+        <img
+          src="./paperwork-nmap-sanitized.png"
+          alt="Sanitized Nmap scan showing SSH, HTTP, and the custom service"
+          style="width: 100%; max-width: 800px; border: 1px solid #ddd; border-radius: 10px;"
+        />
+
+        <figcaption class="meta">
+          Sanitized Nmap results from the authorized Hack The Box Paperwork lab.
+          Target addressing was removed.
+        </figcaption>
+      </figure>
+      -->
+
+      <h3>2. Web Application Analysis</h3>
+
+      <p>
+        Reviewed the web application hosted on port 80 and identified references
+        to a document-archiving service, RFC 1179, and a print queue named
+        <code>archive_intake</code>.
+      </p>
+
+      <p>
+        RFC 1179 describes the Line Printer Daemon protocol. This information,
+        combined with the custom service on TCP port 1515, suggested that the
+        application exposed a nonstandard LPD implementation.
+      </p>
+
+      <p>
+        The website also provided a downloadable archive containing source code
+        for the document processor.
+      </p>
+
+      <h3>3. Archive and Source-Code Inspection</h3>
+
+      <p>
+        Treated the downloaded archive as untrusted and inspected it without
+        executing its contents.
+      </p>
+
+      <pre><code>file paperwork-archive.zip
+sha256sum paperwork-archive.zip
+unzip -l paperwork-archive.zip</code></pre>
+
+      <p>
+        The archive contained a Python server implementation. The source was
+        extracted into a dedicated directory and reviewed with line numbers:
+      </p>
+
+      <pre><code>unzip paperwork-archive.zip -d processor-src
+nl -ba processor-src/server.py</code></pre>
+
+      <p>
+        The review traced network-controlled data from an LPD job-name field to
+        a shell command executed through:
+      </p>
+
+      <pre><code>subprocess.Popen(..., shell=True)</code></pre>
+
+      <p>
+        The submitted job name was inserted into the command without adequate
+        validation, escaping, or safe argument separation.
+      </p>
+
+      <h3>4. Command-Injection Validation</h3>
+
+      <p>
+        First submitted a normal test job to confirm the expected protocol
+        sequence and queue behavior. A controlled callback was then used to
+        validate command execution without modifying important files.
+      </p>
+
+      <p>
+        Successful validation demonstrated that attacker-controlled content in
+        the LPD <code>J</code> job-name field reached the system shell.
+      </p>
+
+      <p>
+        The final payload and callback details are intentionally omitted from
+        this public portfolio.
+      </p>
+
+      <p>
+        A reverse shell was obtained as the low-privileged
+        <code>lpd</code> service account.
+      </p>
+
+      <h3>5. Internal Service Discovery</h3>
+
+      <p>
+        Enumerated running processes and listening sockets from the obtained
+        service account:
+      </p>
+
+      <pre><code>ps -eo user,pid,ppid,cmd --forest
+ss -lntp</code></pre>
+
+      <p>
+        This revealed a Python printer-redirection service running as the
+        <code>archivist</code> user and listening only on:
+      </p>
+
+      <pre><code>127.0.0.1:9100</code></pre>
+
+      <p>
+        Because the service was bound to the loopback interface, it was not
+        visible during external Nmap enumeration. It became accessible only
+        after obtaining a shell on the target.
+      </p>
+
+      <h3>6. PJL Path Traversal and Lateral Movement</h3>
+
+      <p>
+        The internal printer service accepted Printer Job Language commands for
+        filesystem operations. Testing identified insufficient path
+        normalization in the virtual printer storage implementation.
+      </p>
+
+      <p>
+        Directory traversal sequences could escape the intended printer
+        directory. The file-download operation could then write a supplied file
+        into the <code>archivist</code> user's SSH configuration.
+      </p>
+
+      <p>
+        A temporary SSH public key was written to the user's
+        <code>authorized_keys</code> file. The associated private key was used to
+        authenticate locally as <code>archivist</code>.
+      </p>
+
+      <p>
+        All key material has been excluded from this portfolio.
+      </p>
+
+      <h3>7. Root-Owned Management Daemon Analysis</h3>
+
+      <p>
+        After obtaining the <code>archivist</code> account, further enumeration
+        identified a root-owned management daemon and a UNIX domain socket:
+      </p>
+
+      <pre><code>/run/paperwork/mgmt.sock</code></pre>
+
+      <p>
+        The socket was accessible to the <code>archivist</code> group. The daemon
+        was implemented as a readable Python script, allowing its authentication,
+        logging, and incident-response behavior to be reviewed directly.
+      </p>
+
+      <p>
+        The daemon monitored printer logs for selected filesystem-related PJL
+        commands. When suspicious activity was detected, it entered a forensic
+        lockdown path and sent open file descriptors to the connected socket
+        client.
+      </p>
+
+      <h3>8. UNIX File-Descriptor Exposure</h3>
+
+      <p>
+        The daemon transferred file descriptors using the UNIX socket
+        <code>SCM_RIGHTS</code> mechanism. One transferred descriptor referenced
+        a root-only configuration file containing an administrative secret.
+      </p>
+
+      <p>
+        Although the file itself was protected by restrictive filesystem
+        permissions, the privileged daemon had already opened it. Passing the
+        open descriptor to an unprivileged client bypassed the original access
+        restriction.
+      </p>
+
+      <p>
+        The administrative credential was recovered from the transferred
+        descriptor and used to validate root access within the authorized lab.
+        The credential and root flag are not included in this portfolio.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Security Findings</h2>
+
+      <h3>Finding 1: OS Command Injection in the LPD Service</h3>
+
+      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+
+      <p>
+        Network-controlled job-name data was incorporated into a command executed
+        with <code>shell=True</code>. An unauthenticated attacker could inject
+        operating-system commands and obtain access using the service account's
+        permissions.
+      </p>
+
+      <h3>Finding 2: Exposed Application Source Code</h3>
+
+      <p><strong>Severity:</strong> High</p>
+
+      <p>
+        The web application provided downloadable source code for the custom
+        document processor. The code disclosed protocol behavior, queue details,
+        validation logic, internal service ports, and the vulnerable command
+        execution path.
+      </p>
+
+      <h3>Finding 3: Improper Path Validation in the Printer Service</h3>
+
+      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+
+      <p>
+        The internal printer service did not securely normalize or restrict
+        filesystem paths. Directory traversal sequences allowed file operations
+        outside the intended printer storage directory.
+      </p>
+
+      <h3>Finding 4: Arbitrary File Write as Another User</h3>
+
+      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+
+      <p>
+        The printer service ran as the <code>archivist</code> user and allowed
+        attacker-controlled files to be written into that user's home directory.
+        Writing an SSH <code>authorized_keys</code> file enabled lateral movement
+        from the service account to the standard user.
+      </p>
+
+      <h3>Finding 5: Insecure UNIX File-Descriptor Transfer</h3>
+
+      <p class="severity-critical"><strong>Severity:</strong> Critical</p>
+
+      <p>
+        The root-owned management daemon transferred open file descriptors for
+        sensitive files to a lower-privileged client through
+        <code>SCM_RIGHTS</code>. This exposed a root-only administrative secret
+        despite restrictive filesystem permissions.
+      </p>
+
+      <h3>Finding 6: Excessive Trust Across Service Boundaries</h3>
+
+      <p><strong>Severity:</strong> High</p>
+
+      <p>
+        Multiple services operated under different user accounts but trusted
+        unvalidated input from adjacent components. This allowed weaknesses in
+        the public LPD service, internal printer service, and privileged
+        management daemon to be chained into full system compromise.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Remediation Recommendations</h2>
+
+      <ul>
+        <li>
+          Remove <code>shell=True</code> and execute required programs through a
+          fixed argument list that does not invoke a command shell.
+        </li>
+
+        <li>
+          Apply strict allow-list validation to LPD queue names, job names,
+          control-file fields, and all other network-controlled values.
+        </li>
+
+        <li>
+          Do not publish production service source code or internal
+          implementation archives through the public web application.
+        </li>
+
+        <li>
+          Canonicalize filesystem paths before use and verify that resolved paths
+          remain inside the permitted storage directory.
+        </li>
+
+        <li>
+          Reject absolute paths, parent-directory traversal sequences, and
+          unexpected drive or volume identifiers.
+        </li>
+
+        <li>
+          Run internal printer services under a dedicated account that does not
+          own interactive user home directories or SSH configuration.
+        </li>
+
+        <li>
+          Prevent application services from writing to
+          <code>~/.ssh</code>, shell configuration files, scheduled-task
+          locations, and other security-sensitive paths.
+        </li>
+
+        <li>
+          Restrict management-socket access to the smallest necessary set of
+          accounts and verify peer credentials before serving requests.
+        </li>
+
+        <li>
+          Never transfer privileged file descriptors to untrusted clients.
+          Return only sanitized data required for the management operation.
+        </li>
+
+        <li>
+          Store administrative secrets in a dedicated secrets-management system
+          rather than a plaintext configuration file.
+        </li>
+
+        <li>
+          Rotate credentials exposed by the affected daemon and review access
+          logs for previous unauthorized use.
+        </li>
+
+        <li>
+          Apply least privilege and clear trust boundaries between web,
+          printing, archival, and administrative components.
+        </li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Skills Demonstrated</h2>
+
+      <ul>
+        <li>TCP service enumeration and attack-surface analysis</li>
+        <li>Full-port scanning and unusual-service identification</li>
+        <li>Web application reconnaissance</li>
+        <li>Safe inspection of untrusted archives</li>
+        <li>Python source-code review</li>
+        <li>Untrusted-input source-to-sink analysis</li>
+        <li>OS command-injection identification and validation</li>
+        <li>Custom LPD protocol testing</li>
+        <li>Linux process and socket enumeration</li>
+        <li>Loopback-only service discovery</li>
+        <li>PJL filesystem operation analysis</li>
+        <li>Path traversal and arbitrary file-write testing</li>
+        <li>SSH key-based lateral movement</li>
+        <li>UNIX domain socket analysis</li>
+        <li>Linux file-descriptor and SCM_RIGHTS analysis</li>
+        <li>Privilege-escalation validation</li>
+        <li>Risk assessment and remediation documentation</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Key Takeaways</h2>
+
+      <ul>
+        <li>
+          Source-code review can reveal vulnerabilities and internal service
+          relationships that are not visible through network scanning alone.
+        </li>
+
+        <li>
+          Untrusted input should never be inserted into a command executed by a
+          system shell.
+        </li>
+
+        <li>
+          Loopback-only services still require secure authentication, path
+          validation, and least-privilege controls.
+        </li>
+
+        <li>
+          Filesystem permissions cannot protect a sensitive file after a
+          privileged process transfers its open file descriptor to another
+          process.
+        </li>
+
+        <li>
+          Individually isolated weaknesses can become critical when services
+          trust one another across account and privilege boundaries.
+        </li>
+
+        <li>
+          Effective security assessments connect technical findings to business
+          impact and practical remediation.
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div id="copy"></div>
+
+    <script>
+      document.getElementById("copy").textContent =
+        `© ${new Date().getFullYear()} Britney Martinez`;
+    </script>
+  </footer>
+</body>
+</html>
