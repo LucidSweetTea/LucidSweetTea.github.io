@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>PortSwigger Web Security Academy | Britney Martinez</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      color: #111;
+      background: #fff;
+    }
+
+    header,
+    main,
+    footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    header {
+      padding-top: 60px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .meta {
+      color: #555;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    footer {
+      color: #666;
+      font-size: 13px;
+      padding-bottom: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>PortSwigger Web Security Academy: Server-Side Vulnerabilities</h1>
+
+    <p class="meta">
+      Burp Suite • Web Application Security • Vulnerability Testing •
+      Authentication • Access Control • SSRF • SQL Injection
+    </p>
+
+    <p>
+      <a href="../index.html">← Back to Home</a>
+    </p>
+  </header>
+
+  <main>
+
+    <section class="card">
+      <h2>Project Overview</h2>
+
+      <p>
+        Completed the full 52-step PortSwigger Web Security Academy
+        Server-side Vulnerabilities Apprentice learning path. The training
+        combined technical instruction with hands-on web application security
+        labs in an authorized environment.
+      </p>
+
+      <p>
+        The labs focused on identifying, validating, and understanding common
+        server-side vulnerabilities while using Burp Suite to inspect and
+        manipulate HTTP requests and responses.
+      </p>
+
+      <p>
+        Lab secrets, credentials, session tokens, and temporary training
+        environment values are intentionally excluded from this portfolio.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Tools and Environment</h2>
+
+      <ul>
+        <li>PortSwigger Web Security Academy</li>
+        <li>Burp Suite Community Edition</li>
+        <li>Burp Proxy and HTTP History</li>
+        <li>Burp Repeater</li>
+        <li>Burp Intruder</li>
+        <li>Burp Intercept</li>
+        <li>HTTP request and response analysis</li>
+        <li>Browser developer tools</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Vulnerability Areas Completed</h2>
+
+      <h3>1. Path Traversal</h3>
+      <p>
+        Tested file path parameters for improper directory restrictions and
+        demonstrated how unsafe path handling can expose files outside an
+        application's intended storage directory.
+      </p>
+
+      <h3>2. Access Control</h3>
+      <p>
+        Tested vertical and horizontal privilege escalation scenarios,
+        including insecure direct object references, exposed administrative
+        functionality, and user-controlled authorization values.
+      </p>
+
+      <h3>3. Authentication Vulnerabilities</h3>
+      <p>
+        Analyzed authentication workflows for username enumeration,
+        weak credential protections, two-factor authentication bypasses,
+        and improper separation between authentication and authorization.
+      </p>
+
+      <h3>4. Server-Side Request Forgery</h3>
+      <p>
+        Used vulnerable server-side request functionality to identify
+        unintended access to loopback and internal network services.
+        Burp Intruder was used to test internal address ranges and Burp
+        Repeater was used to validate discovered services.
+      </p>
+
+      <h3>5. File Upload Vulnerabilities</h3>
+      <p>
+        Tested insecure file upload controls and demonstrated the risks of
+        trusting user-controlled MIME types. Modified multipart HTTP requests
+        with Burp to validate Content-Type restriction weaknesses.
+      </p>
+
+      <h3>6. OS Command Injection</h3>
+      <p>
+        Identified unsafe user input reaching operating-system commands and
+        validated command execution through controlled lab testing.
+      </p>
+
+      <h3>7. SQL Injection</h3>
+      <p>
+        Tested vulnerable SQL query parameters for hidden-data retrieval and
+        authentication bypass. The exercises demonstrated the security impact
+        of dynamically constructing SQL queries from untrusted user input.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Burp Suite Skills Demonstrated</h2>
+
+      <ul>
+        <li>Captured and reviewed HTTP requests using Proxy and HTTP History</li>
+        <li>Modified and replayed requests using Burp Repeater</li>
+        <li>Configured payload positions and automated testing with Intruder</li>
+        <li>Intercepted and modified live requests before forwarding them</li>
+        <li>Analyzed status codes, response lengths, headers, cookies, and bodies</li>
+        <li>Modified URL parameters, form data, cookies, and multipart requests</li>
+        <li>Compared application responses to identify behavioral differences</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Security Concepts Reinforced</h2>
+
+      <ul>
+        <li>Server-side input validation</li>
+        <li>Parameterized SQL queries and prepared statements</li>
+        <li>Least privilege and authorization enforcement</li>
+        <li>Secure authentication and session handling</li>
+        <li>Internal network trust boundaries</li>
+        <li>Safe file upload validation and storage</li>
+        <li>Command execution risk and shell input handling</li>
+        <li>HTTP request and response analysis</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Key Takeaways</h2>
+
+      <ul>
+        <li>
+          Client-controlled values should never be trusted to make
+          authorization or security decisions.
+        </li>
+
+        <li>
+          Small differences in HTTP responses can reveal authentication and
+          authorization weaknesses.
+        </li>
+
+        <li>
+          Internal-only services still require authentication and strong
+          access controls.
+        </li>
+
+        <li>
+          File extension and MIME-type checks alone are insufficient protection
+          for uploaded files.
+        </li>
+
+        <li>
+          Parameterized queries and safe APIs are essential defenses against
+          injection vulnerabilities.
+        </li>
+
+        <li>
+          Burp Suite provides an effective workflow for capturing, modifying,
+          replaying, and comparing web application traffic.
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <div id="copy"></div>
+
+    <script>
+      document.getElementById("copy").textContent =
+        `© ${new Date().getFullYear()} Britney Martinez`;
+    </script>
+  </footer>
+</body>
+</html>
