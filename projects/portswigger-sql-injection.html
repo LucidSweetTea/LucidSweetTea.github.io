@@ -68,6 +68,24 @@
       margin-top: 18px;
     }
 
+    .evidence-image {
+      display: block;
+      width: 100%;
+      max-width: 850px;
+      height: auto;
+      margin: 18px auto 0;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    figcaption {
+      margin-top: 10px;
+    }
+
     code {
       background: #f1f1f1;
       padding: 2px 5px;
@@ -103,6 +121,8 @@
       Web Application Security • SQL Injection • Burp Suite • Authorized Lab Environment
     </p>
 
+
+    <!-- PROJECT OVERVIEW -->
     <section class="card">
       <h2>Project Overview</h2>
 
@@ -126,6 +146,34 @@
       </div>
     </section>
 
+
+    <!-- COMPLETION EVIDENCE -->
+    <section class="card">
+      <h2>Completion Evidence</h2>
+
+      <p>
+        Completed the PortSwigger Web Security Academy SQL Injection Practitioner
+        learning path, covering foundational through advanced SQL injection testing
+        techniques.
+      </p>
+
+      <figure>
+        <img
+          class="evidence-image"
+          src="./portswigger-sql-injection-completion.png"
+          alt="PortSwigger Web Security Academy SQL Injection learning path completion"
+        />
+
+        <figcaption class="meta">
+          PortSwigger Web Security Academy SQL Injection learning path completion.
+          Sensitive lab credentials, session information, and temporary lab data
+          are excluded from this portfolio.
+        </figcaption>
+      </figure>
+    </section>
+
+
+    <!-- ENVIRONMENT -->
     <section class="card">
       <h2>Environment and Tools</h2>
 
@@ -141,6 +189,8 @@
       </ul>
     </section>
 
+
+    <!-- METHODOLOGY -->
     <section class="card">
       <h2>Assessment Methodology</h2>
 
@@ -187,6 +237,8 @@
       </ol>
     </section>
 
+
+    <!-- TECHNIQUES -->
     <section class="card">
       <h2>Techniques Practiced</h2>
 
@@ -198,6 +250,7 @@
         testing, mathematical expressions, and controlled query manipulation.
       </p>
 
+
       <h3>2. UNION-Based SQL Injection</h3>
 
       <p>
@@ -206,12 +259,14 @@
         to retrieve controlled database information from additional tables.
       </p>
 
+
       <h3>3. Authentication Logic Bypass</h3>
 
       <p>
         Explored how unsafe SQL query construction can allow attacker-controlled
         input to alter authentication logic and bypass intended account validation.
       </p>
+
 
       <h3>4. Blind SQL Injection with Conditional Responses</h3>
 
@@ -221,6 +276,7 @@
         to automate repeated character testing.
       </p>
 
+
       <h3>5. Error-Based SQL Injection</h3>
 
       <p>
@@ -228,6 +284,7 @@
         conversion and query errors demonstrated how verbose database messages can
         unintentionally expose sensitive query results.
       </p>
+
 
       <h3>6. Time-Based Blind SQL Injection</h3>
 
@@ -242,6 +299,7 @@
         timing could be compared reliably while testing individual password
         positions.
       </p>
+
 
       <h3>7. XML Encoding and WAF Bypass</h3>
 
@@ -264,6 +322,8 @@
       </p>
     </section>
 
+
+    <!-- BLIND SQL WORKFLOW -->
     <section class="card">
       <h2>Blind SQL Injection Workflow</h2>
 
@@ -281,12 +341,15 @@
         <li>
           <strong>True condition:</strong> trigger a controlled database delay.
         </li>
+
         <li>
           <strong>False condition:</strong> return without the delay.
         </li>
+
         <li>
           Compare response timing to infer whether each tested condition was true.
         </li>
+
         <li>
           Repeat the process for individual positions when extracting an unknown
           value.
@@ -299,6 +362,8 @@
       </p>
     </section>
 
+
+    <!-- FILTER BYPASS -->
     <section class="card">
       <h2>Filter Bypass Analysis</h2>
 
@@ -320,6 +385,8 @@
       </p>
     </section>
 
+
+    <!-- OAST -->
     <section class="card">
       <h2>OAST Concepts Reviewed</h2>
 
@@ -337,6 +404,8 @@
       </p>
     </section>
 
+
+    <!-- IMPACT -->
     <section class="card">
       <h2>Security Impact</h2>
 
@@ -355,6 +424,8 @@
       </ul>
     </section>
 
+
+    <!-- REMEDIATION -->
     <section class="card">
       <h2>Remediation Recommendations</h2>
 
@@ -395,6 +466,8 @@
       </ul>
     </section>
 
+
+    <!-- SKILLS -->
     <section class="card">
       <h2>Skills Demonstrated</h2>
 
@@ -415,6 +488,8 @@
       </ul>
     </section>
 
+
+    <!-- TAKEAWAYS -->
     <section class="card">
       <h2>Key Takeaways</h2>
 
@@ -432,6 +507,7 @@
         attacker-controlled input from becoming executable SQL.
       </p>
     </section>
+
 
     <footer>
       Authorized cybersecurity training project • Britney Martinez
