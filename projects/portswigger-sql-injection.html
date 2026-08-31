@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PortSwigger SQL Injection Practitioner | Britney Martinez</title>
+
+  <meta
+    name="description"
+    content="Authorized web application security project documenting SQL injection testing completed through PortSwigger Web Security Academy using Burp Suite."
+  />
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    a {
+      color: #0056b3;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    h1 {
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    h3 {
+      margin-bottom: 6px;
+    }
+
+    .meta {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 24px;
+      margin-top: 20px;
+    }
+
+    .callout {
+      background: #f3f6f9;
+      border-left: 4px solid #555;
+      padding: 14px 16px;
+      margin-top: 18px;
+    }
+
+    code {
+      background: #f1f1f1;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    ul,
+    ol {
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <a class="back-link" href="../index.html">← Back to Portfolio</a>
+
+    <h1>PortSwigger Web Security Academy: SQL Injection Practitioner</h1>
+
+    <p class="meta">
+      Web Application Security • SQL Injection • Burp Suite • Authorized Lab Environment
+    </p>
+
+    <section class="card">
+      <h2>Project Overview</h2>
+
+      <p>
+        This project documents hands-on SQL injection testing completed through
+        PortSwigger Web Security Academy in intentionally vulnerable and authorized
+        lab environments.
+      </p>
+
+      <p>
+        The work progressed from basic SQL injection discovery through more advanced
+        techniques including UNION-based data retrieval, authentication bypass,
+        blind inference, error-based extraction, time-delay attacks, and filter
+        bypass through XML encoding.
+      </p>
+
+      <div class="callout">
+        All testing was performed against PortSwigger Web Security Academy labs.
+        Credentials, session cookies, active lab URLs, and other temporary sensitive
+        values are intentionally excluded from this portfolio.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Environment and Tools</h2>
+
+      <ul>
+        <li>PortSwigger Web Security Academy</li>
+        <li>Burp Suite Community Edition</li>
+        <li>Burp Proxy</li>
+        <li>Burp Repeater</li>
+        <li>Burp Intruder</li>
+        <li>Hackvertor extension</li>
+        <li>HTTP request and response analysis</li>
+        <li>SQL query construction and validation</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Assessment Methodology</h2>
+
+      <ol>
+        <li>
+          Identified application-controlled parameters that influenced back-end SQL
+          queries.
+        </li>
+
+        <li>
+          Submitted controlled test values and compared response content, status
+          codes, errors, and timing behavior.
+        </li>
+
+        <li>
+          Determined query structure, including the number of returned columns and
+          compatible data types.
+        </li>
+
+        <li>
+          Used UNION-based techniques to retrieve information from additional
+          database tables.
+        </li>
+
+        <li>
+          Tested blind injection conditions where query results were not directly
+          returned to the browser.
+        </li>
+
+        <li>
+          Automated repetitive inference testing with Burp Intruder when manual
+          testing was inefficient.
+        </li>
+
+        <li>
+          Applied encoding techniques when a web application firewall blocked
+          obvious SQL injection syntax.
+        </li>
+
+        <li>
+          Validated successful exploitation by completing the objectives of each
+          authorized lab.
+        </li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Techniques Practiced</h2>
+
+      <h3>1. SQL Injection Detection</h3>
+
+      <p>
+        Tested application parameters for unexpected SQL evaluation by modifying
+        inputs and observing changes in application behavior. This included syntax
+        testing, mathematical expressions, and controlled query manipulation.
+      </p>
+
+      <h3>2. UNION-Based SQL Injection</h3>
+
+      <p>
+        Determined the number of columns returned by vulnerable queries and
+        identified columns capable of returning text. UNION queries were then used
+        to retrieve controlled database information from additional tables.
+      </p>
+
+      <h3>3. Authentication Logic Bypass</h3>
+
+      <p>
+        Explored how unsafe SQL query construction can allow attacker-controlled
+        input to alter authentication logic and bypass intended account validation.
+      </p>
+
+      <h3>4. Blind SQL Injection with Conditional Responses</h3>
+
+      <p>
+        When database results were not directly returned, boolean conditions were
+        tested by comparing observable application responses. Burp Intruder was used
+        to automate repeated character testing.
+      </p>
+
+      <h3>5. Error-Based SQL Injection</h3>
+
+      <p>
+        Used database error behavior as an information channel. Controlled type
+        conversion and query errors demonstrated how verbose database messages can
+        unintentionally expose sensitive query results.
+      </p>
+
+      <h3>6. Time-Based Blind SQL Injection</h3>
+
+      <p>
+        Tested boolean conditions by triggering controlled database delays. A true
+        condition produced a measurable delay while a false condition returned
+        normally.
+      </p>
+
+      <p>
+        Burp Intruder was configured to issue requests sequentially so response
+        timing could be compared reliably while testing individual password
+        positions.
+      </p>
+
+      <h3>7. XML Encoding and WAF Bypass</h3>
+
+      <p>
+        Identified a SQL injection flaw in an XML-based stock-check request. An
+        obvious UNION payload was blocked by the application's filtering layer.
+      </p>
+
+      <p>
+        Using the Hackvertor extension, the SQL input was represented with XML
+        entities. The application decoded the XML before processing the query while
+        the filtering layer failed to recognize the encoded SQL syntax.
+      </p>
+
+      <p>
+        After bypassing the filter, a single-column UNION query concatenated
+        usernames and passwords into one returned value, demonstrating how encoding
+        inconsistencies between security controls and application parsers can create
+        exploitable gaps.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Blind SQL Injection Workflow</h2>
+
+      <p>
+        One of the most useful lessons from the learning path was understanding how
+        information can still be recovered when an application displays no database
+        results.
+      </p>
+
+      <p>
+        In the time-based labs, the testing model was:
+      </p>
+
+      <ul>
+        <li>
+          <strong>True condition:</strong> trigger a controlled database delay.
+        </li>
+        <li>
+          <strong>False condition:</strong> return without the delay.
+        </li>
+        <li>
+          Compare response timing to infer whether each tested condition was true.
+        </li>
+        <li>
+          Repeat the process for individual positions when extracting an unknown
+          value.
+        </li>
+      </ul>
+
+      <p>
+        This demonstrated that the absence of visible output does not necessarily
+        prevent data inference when other side channels are available.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Filter Bypass Analysis</h2>
+
+      <p>
+        The XML stock-check lab demonstrated an important defensive lesson: a WAF
+        and the protected application may interpret the same input differently.
+      </p>
+
+      <p>
+        A plainly written UNION query was detected and blocked. After the input was
+        represented using XML entities, the filtering layer allowed the request,
+        while the application later decoded and evaluated the SQL expression.
+      </p>
+
+      <p>
+        This reinforced the importance of preventing SQL injection at the database
+        interaction layer rather than relying exclusively on pattern-based filtering
+        or request inspection.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>OAST Concepts Reviewed</h2>
+
+      <p>
+        The learning path also introduced out-of-band application security testing
+        concepts, where a vulnerable database can be induced to make an external DNS
+        or HTTP request.
+      </p>
+
+      <p>
+        The Burp Collaborator hands-on labs require functionality available in Burp
+        Suite Professional. Because this project was completed using Burp Suite
+        Community Edition, those Professional-only Collaborator exercises were
+        reviewed conceptually rather than represented here as hands-on testing.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Security Impact</h2>
+
+      <p>
+        SQL injection can allow an attacker to interfere with database queries and,
+        depending on application architecture and database permissions, may lead to:
+      </p>
+
+      <ul>
+        <li>Unauthorized access to sensitive database information</li>
+        <li>Authentication bypass</li>
+        <li>Exposure of usernames, password data, and application records</li>
+        <li>Modification or deletion of stored information</li>
+        <li>Privilege escalation within an application</li>
+        <li>Out-of-band data exfiltration in certain environments</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Remediation Recommendations</h2>
+
+      <ul>
+        <li>
+          Use parameterized queries or prepared statements instead of concatenating
+          untrusted input into SQL statements.
+        </li>
+
+        <li>
+          Apply strict server-side input validation appropriate to the expected data
+          type and business function.
+        </li>
+
+        <li>
+          Use least-privilege database accounts so application queries have only the
+          permissions they require.
+        </li>
+
+        <li>
+          Avoid exposing verbose database error messages to users.
+        </li>
+
+        <li>
+          Normalize and validate encoded input before security inspection so
+          filtering controls and the application interpret requests consistently.
+        </li>
+
+        <li>
+          Treat WAF rules as defense-in-depth rather than as the primary control for
+          preventing SQL injection.
+        </li>
+
+        <li>
+          Monitor unusual database behavior, repeated malformed requests, and
+          abnormal response timing patterns.
+        </li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Skills Demonstrated</h2>
+
+      <ul>
+        <li>SQL injection identification and validation</li>
+        <li>UNION-based data retrieval</li>
+        <li>Blind SQL injection analysis</li>
+        <li>Conditional-response inference</li>
+        <li>Error-based data extraction</li>
+        <li>Time-based inference techniques</li>
+        <li>Burp Suite Proxy, Repeater, and Intruder</li>
+        <li>HTTP request and response analysis</li>
+        <li>XML request manipulation</li>
+        <li>Hackvertor encoding workflows</li>
+        <li>WAF bypass analysis</li>
+        <li>Evidence-driven troubleshooting</li>
+        <li>Defensive remediation analysis</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Key Takeaways</h2>
+
+      <p>
+        This project strengthened my understanding of SQL injection beyond basic
+        syntax testing. Different application behaviors can provide different
+        information channels, including returned content, conditional responses,
+        database errors, and measurable timing differences.
+      </p>
+
+      <p>
+        The labs also demonstrated why strong application-layer defenses must focus
+        on safe database interaction. Encoding tricks and parser differences can
+        bypass superficial filtering, while parameterized queries prevent
+        attacker-controlled input from becoming executable SQL.
+      </p>
+    </section>
+
+    <footer>
+      Authorized cybersecurity training project • Britney Martinez
+    </footer>
+
+  </main>
+</body>
+</html>
