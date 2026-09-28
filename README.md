@@ -24,6 +24,8 @@ Currently working in a security leadership role supporting operations, access-re
 - Foundations of Cybersecurity – Google/Coursera
 - Play It Safe: Manage Security Risks – Google/Coursera
 - CompTIA Security+ (SY0-701) — Certified July 2026; valid through July 2029
+- TryHackMe — Guided Pentest: Web — Hands-on web application penetration testing fundamentals
+- TryHackMe — Guided Pentest: Infrastructure — Hands-on infrastructure enumeration and penetration testing fundamentals
 - PortSwigger Web Security Academy — Server-Side Vulnerabilities Apprentice Learning Path
 - PortSwigger Web Security Academy — SQL Injection Practitioner Learning Path
   
